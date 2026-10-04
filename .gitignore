@@ -1,0 +1,45 @@
+# ---------- MSBuild / NuGet 中间产物 ----------
+/obj/
+/x64/
+/FloatingIsland/
+
+# ---------- 工具与 IDE 缓存 ----------
+/.vs/
+/.codegraph/
+
+# ---------- 运行时日志 ----------
+/log/
+*.log
+
+# ---------- 编译产物 ----------
+*.obj
+*.pdb
+*.ilk
+*.idb
+*.exp
+*.lib
+*.exe
+*.ipch
+*.aps
+*.res
+*.rc2
+
+# ---------- VS 本地文件 ----------
+*.user
+*.suo
+*.sdf
+*.opensdf
+*.ncb
+*.VC.db
+*.VC.opendb
+*.pidb
+*.tlog
+*.lastbuildstate
+
+# ---------- 临时文件 ----------
+*.tmp
+*.bak
+*.old
+*~
+Thumbs.db
+desktop.ini

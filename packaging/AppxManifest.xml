@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Sparse MSIX：只为进程赋予 package identity（GSMTC / 通知监听等系统 API 需要），
+  不打包 exe 本体 —— exe 仍留在输出目录，通过 ExternalLocation 关联。
+
+  注册：powershell -File packaging\register-sparse.ps1
+  启动：必须从开始菜单（或 shell:AppsFolder）启动，直接双击 exe 没有身份。
+-->
+<Package
+    xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+    xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+    xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities">
+
+  <Identity Name="FloatingIsland"
+            Publisher="CN=FloatingIsland"
+            Version="1.0.0.0"
+            ProcessorArchitecture="neutral" />
+
+  <Properties>
+    <DisplayName>FloatingIsland</DisplayName>
+    <PublisherDisplayName>FloatingIsland</PublisherDisplayName>
+    <Logo>Assets\Square44x44Logo.png</Logo>
+  </Properties>
+
+  <Applications>
+    <Application Id="App"
+                 Executable="FloatingIsland.exe"
+                 EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements
+          DisplayName="FloatingIsland"
+          Description="Dynamic Island for Windows"
+          BackgroundColor="transparent"
+          Square150x150Logo="Assets\Square150x150Logo.png"
+          Square44x44Logo="Assets\Square44x44Logo.png" />
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
+</Package>

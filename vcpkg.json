@@ -1,0 +1,9 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
+  "name": "floating-island",
+  "version-string": "0.2.0",
+  "description": "Windows 灵动岛：媒体/歌词/频谱/通知聚合悬浮组件",
+  "dependencies": [
+    "nlohmann-json"
+  ]
+}

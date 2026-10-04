@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>18.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{2c520f4d-cba0-415a-abdb-acbe35004b20}</ProjectGuid>
+    <RootNamespace>FloatingIsland</RootNamespace>
+    <!-- 固定 SDK 版本：GSMTC / DComp 头在不同版本间有差异（如 RequestAsync 改名） -->
+    <WindowsTargetPlatformVersion>10.0.28000.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ItemGroup>
+    <!-- C++/WinRT 完整投影：SDK 自带 cppwinrt 缺 Notification.Title/Body 等成员 -->
+    <PackageReference Include="Microsoft.Windows.CppWinRT" Version="2.0.240405.15" />
+  </ItemGroup>
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <!-- Debug：/MTd 静态链接调试版 CRT -->
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;UNICODE;_UNICODE;NOMINMAX;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)third_party;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <!-- 源文件统一按 UTF-8 解析：中文注释/字符串中可能出现 0x5C 字节，按 GBK 解析会被误判成转义符 -->
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;dcomp.lib;d2d1.lib;dwrite.lib;windowscodecs.lib;dwmapi.lib;windowsapp.lib;shcore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <!-- Release：/MT 静态链接 CRT -> 零运行时依赖的单文件 exe -->
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;UNICODE;_UNICODE;NOMINMAX;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)third_party;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;dcomp.lib;d2d1.lib;dwrite.lib;windowscodecs.lib;dwmapi.lib;windowsapp.lib;shcore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Manifest>
+      <EnableSegmentHeap>true</EnableSegmentHeap>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\renderer.cpp" />
+    <ClCompile Include="src\config\ConfigStore.cpp" />
+    <ClCompile Include="src\util\Logger.cpp" />
+    <ClCompile Include="src\media\gsmtc_probe.cpp" />
+    <ClCompile Include="src\media\media_session.cpp" />
+    <ClCompile Include="src\media\MediaController.cpp" />
+    <ClCompile Include="src\media\ImageLoader.cpp" />
+    <ClCompile Include="src\media\LyricsFetcher.cpp" />
+    <ClCompile Include="src\media\LyricsService.cpp" />
+    <ClCompile Include="src\media\JustSoloClient.cpp" />
+    <ClCompile Include="src\net\HttpClient.cpp" />
+    <ClCompile Include="src\audio\AudioAnalyzer.cpp" />
+    <ClCompile Include="src\notify\ToastListener.cpp" />
+    <ClCompile Include="src\notify\ClipboardMonitor.cpp" />
+    <ClCompile Include="src\notify\NotificationCenter.cpp" />
+    <ClCompile Include="src\system\SysInfo.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\renderer.h" />
+    <ClInclude Include="src\sdf.h" />
+    <ClInclude Include="src\config\ConfigStore.h" />
+    <ClInclude Include="src\util\Logger.h" />
+    <ClInclude Include="src\util\Singleton.h" />
+    <ClInclude Include="src\media\gsmtc_probe.h" />
+    <ClInclude Include="src\media\media_session.h" />
+    <ClInclude Include="src\media\MediaController.h" />
+    <ClInclude Include="src\media\ImageLoader.h" />
+    <ClInclude Include="src\media\LyricsFetcher.h" />
+    <ClInclude Include="src\media\LyricsService.h" />
+    <ClInclude Include="src\media\JustSoloClient.h" />
+    <ClInclude Include="src\net\HttpClient.h" />
+    <ClInclude Include="src\audio\AudioAnalyzer.h" />
+    <ClInclude Include="src\notify\ToastListener.h" />
+    <ClInclude Include="src\notify\ClipboardMonitor.h" />
+    <ClInclude Include="src\notify\NotificationCenter.h" />
+    <ClInclude Include="src\system\SysInfo.h" />
+    <ClInclude Include="src\media\winrt_helpers.h" />
+    <ClInclude Include="src\shaders\generated\fullscreen_vs.h" />
+    <ClInclude Include="src\shaders\generated\island_ps.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

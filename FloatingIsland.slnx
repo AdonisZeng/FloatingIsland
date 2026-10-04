@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="FloatingIsland.vcxproj" Id="2c520f4d-cba0-415a-abdb-acbe35004b20" />
+</Solution>
